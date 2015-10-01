@@ -21,32 +21,32 @@ the user them.
 
 ### Get a token for a registered user
 
-URL: `/auth/get-token`
-DATA:
-`username` - Username of the person to log in
-`password` - Raw password of the person to log in
+URL: `/auth/get-token`  
+DATA:  
+`username` - Username of the person to log in.  
+`password` - Raw password of the person to log in.
 
-RESPONSE:
-`200 - OK` with a body containing a dictionary with one parameter, `token`, which
-is a string.
-`400 - Bad Request` for wrong username / password. Also returns a dict of all the
-errors.
+RESPONSE:  
+`200 - OK` with a body containing a dictionary with one parameter, `token`, which is a string.  
+`400 - Bad Request` for wrong username / password. Also returns a dict of all the errors.
 
-NOTES:
+NOTES:  
 Tokens do not expire, you could log in once and then forever authenticate.
 
 ### Hello World
 
-URL: `/hello-world`
-DATA: 
-None, however you can use the token header to make an authenticated request.
+URL: `/hello-world`  
+DATA:  
+Optional token header to make an authenticated request.
 
-RESPONSE:
+RESPONSE:  
 Plain text, `Hello world` if you are anonymous (no token / un recognised) and 
 `Hello <username>` if you have the token (the tests fail for this... unverified).
 
 #### References
-How to authenticate: http://www.django-rest-framework.org/api-guide/authentication/
+How to authenticate: http://www.django-rest-framework.org/api-guide/authentication/  
+Content Headers: http://www.django-rest-framework.org/api-guide/content-negotiation/
+
 
 ## User stories to implement
 
