@@ -6,15 +6,15 @@ A simple API to vote on paired items in a list
 
 ### Register a user
 
-URL: `/auth/register`
-DATA:
-`username` - Username of the person to register
-`email` - Email of the person to register
+URL: `/auth/register`  
+DATA:  
+`username` - Username of the person to register  
+`email` - Email of the person to register  
 `password` - Raw password of the user (will be sent over SSL in the final so its
 secure enough.
 
 RESPONSE:
-`200 - OK` with no body if the user was made
+`200 - OK` with no body if the user was made  
 `400 - Bad Request` if the username is taken, or you are missing any fields.
 The body will contain a dictionary of all your goofs so you should be ok to show
 the user them.
