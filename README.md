@@ -8,14 +8,14 @@ A simple API to vote on paired items in a list
 
 URL: `/auth/register`  
 DATA:  
-`username` - Username of the person to register  
-`email` - Email of the person to register  
-`password` - Raw password of the user (will be sent over SSL in the final so its
+* `username`: Username of the person to register  
+* `email`: Email of the person to register  
+* `password`: Raw password of the user (will be sent over SSL in the final so its
 secure enough.
 
 RESPONSE:
-`200 - OK` with no body if the user was made  
-`400 - Bad Request` if the username is taken, or you are missing any fields.
+* `200 - OK` with no body if the user was made  
+* `400 - Bad Request` if the username is taken, or you are missing any fields.
 The body will contain a dictionary of all your goofs so you should be ok to show
 the user them.
 
@@ -23,25 +23,25 @@ the user them.
 
 URL: `/auth/get-token`  
 DATA:  
-`username` - Username of the person to log in.  
-`password` - Raw password of the person to log in.
+* `username`:  Username of the person to log in.  
+* `password`: Raw password of the person to log in.
 
-RESPONSE:  
-`200 - OK` with a body containing a dictionary with one parameter, `token`, which is a string.  
-`400 - Bad Request` for wrong username / password. Also returns a dict of all the errors.
+RESPONSES:  
+* `200 - OK` with a body containing a dictionary with one parameter, `token`, which is a string.  
+* `400 - Bad Request` for wrong username / password. Also returns a dict of all the errors.
 
 NOTES:  
-Tokens do not expire, you could log in once and then forever authenticate.
+* Tokens do not expire, you could log in once and then forever authenticate.
 
 ### Hello World
 
 URL: `/hello-world`  
 DATA:  
-Optional token header to make an authenticated request.
+* Optional token header to make an authenticated request.
 
 RESPONSE:  
-Plain text, `Hello world` if you are anonymous (no token / un recognised) and 
-`Hello <username>` if you have the token (the tests fail for this... unverified).
+* Plain text, `Hello world` if you are anonymous (no token / un recognised) 
+* `Hello <username>` if you have the token (the tests fail for this... unverified).
 
 #### References
 How to authenticate: http://www.django-rest-framework.org/api-guide/authentication/  
