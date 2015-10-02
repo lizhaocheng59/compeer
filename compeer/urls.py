@@ -23,13 +23,12 @@ urlpatterns = [
 ] + api_urls.urlPatterns
 
 if DEBUG:
-    from django.http import HttpResponse
-    from django.template import RequestContext
+	from rest_framework.response import Response
 
     def say_hello(request):
         username = 'world'
         if request.user.username != '':
             username = request.user.username
-        return HttpResponse('hello %s' % username)
+        return Response('hello %s' % username)
 
     urlpatterns.append(url(r'^hello-world/', say_hello, name='hello_world'))
