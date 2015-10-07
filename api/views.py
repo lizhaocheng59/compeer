@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework import status
+from rest_framework import permissions
 
 __author__ = 'Jableader'
 
@@ -43,33 +45,33 @@ def register_user(request):
 
 ####    Item    ####
 
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Item
-
-class NoListItemSerializer(ItemSerializer):
+class ItemSerializer(serializers.Serializer):
     class Meta:
         read_only_fields = ('list',)
 
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = models.Item.objects.all()
+    serializer_class = models.Item
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 @login_required()
 @api_view(['POST', 'PUT'])
-def update_item(request):
+def update_item(request, list_pk):
+    list = get_object_or_404(models.List, list_pk)
+
     success_status = status.HTTP_200_OK
-    if request.method == 'POST':
-        serializer = ItemSerializer(data=request.data)
-        success_status = status.HTTP_201_CREATED
-    else:
-        serializer = NoListItemSerializer(data=request.data)
+    serializer = ItemSerializer(data=request.data)
 
-    errors = serializer.errors
-    if request.user != serializer.instance.list.owner:
-        errors['owner'] = 'You can only modify lists that you own'
-
-    if len(errors) == 0 and serializer.is_valid():
-        serializer.save()
+    owner_matches = (request.user == list.owner)
+    if owner_matches and serializer.is_valid():
+        serializer.save(list=list)
 
         return Response(status=success_status)
     else:
+        errors = serializer.errors
+        if not owner_matches:
+            errors['owner'] = 'You can not add to lists you do not own'
+
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -79,8 +81,7 @@ class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.List
         read_only_fields = ('owner',)
-
-    items = serializers.StringRelatedField
+        depth = 1
 
     def create(self, validated_data):
         model = super(self, ListSerializer).create(validated_data)
@@ -88,9 +89,15 @@ class ListSerializer(serializers.ModelSerializer):
 
         return model
 
+class ListViewSet(viewsets.ModelViewSet):
+    queryset = models.List.objects.all()
+    serializer_class = ListSerializer
+    permission_classes = [Is]
+
 @login_required
-@api_view(['POST', 'PUT'])
+@api_view(['POST'])
 def create_list(request):
+
     serializer = ListSerializer(data=request.data)
 
     if serializer.is_valid() and not request.user.is_anonymous():
@@ -101,3 +108,10 @@ def create_list(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+def get_list(request, list_pk):
+    list = get_object_or_404(models.List, list_pk)
+    serializer = ListSerializer(instance=list)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
