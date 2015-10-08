@@ -71,7 +71,7 @@ Status	| Resource	| Ref     | As a  | I want to         | So I can
 ------- | ---------	| ------- | ----- | ----------------- | ---------------------------------
 ASN		| Lee		| CS104   | User  | search for a list | find the list I want
 OPN		| 			| CS110   | User  | select the list I would like to vote on | vote on things I care about
-ASN		| Jacob		| CS101   | User  | create a list     | add items to vote
+WRK		| Jacob		| CS101   | User  | create a list     | add items to vote
 
 ### Iteration 3
 Done?	| Resource	| Ref     | As a  | I want to         | So I can
