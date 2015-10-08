@@ -26,7 +26,9 @@ urlpatterns = [
 
 if DEBUG:
     from rest_framework.response import Response
+    from rest_framework.decorators import api_view
 
+    @api_view(['GET'])
     def say_hello(request):
         username = 'world'
         if request.user.username != '':
