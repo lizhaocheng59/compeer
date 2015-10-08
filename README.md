@@ -33,6 +33,71 @@ RESPONSES:
 NOTES:  
 * Tokens do not expire, you could log in once and then forever authenticate.
 
+### Lists
+
+You can POST to create lists, or GEt to get lists. GET returns the items as nested values.
+
+General structure (note the score / rank is not included right now):
+```javascript
+{
+    "id": 0,
+    "title": "Top TV shows",
+    "description": "Pretty self explainatry aye",
+    "action_word": "better"
+    "items": [
+        {
+            "id": 0,
+            "caption": "Bobs Burgers",
+            "description": "Bob makes burger. Hilarity ensues"
+        },
+        {
+            "id": 1,
+            "caption": "Archer",
+            "description": "The worlds most famous secret agent"
+        }
+    ]
+}
+```
+
+#### Making a list
+
+To make a list you must be authenticated, or else you will get a 401.
+
+You need to `POST` to `/list/` with the data `caption`, `description` and optionally `action_word`.
+
+
+#### Getting or updating a list
+
+To view info about a list, you must know its PK. Then make a GET request to `/list/<pk>`. It will match the structure above.
+
+AFAIK you can also PUT/PATCH to the url to modify information of the list. But I couldn't get the tests green.
+
+
+### Items
+
+API is pretty similar to lists, where you can create by `POST`ing to `\item\` and can update/view with `\item\<pk>`.
+
+Right now images are not given at all, although I think you can upload them. Next on the todo list is to make it so images are provided as a URL to the image file.
+
+Note, in order to create an item you must be authenticated as the owner of the associated list.
+
+#### Get structure
+
+Note: The list is provided as an ID rather than a nested structure
+```javascript
+{
+    "id": 0,
+    "list": 7, 
+    "caption": "Bobs Burgers",
+    "description": "Bob makes burger. Hilarity ensues"
+}
+```
+
+#### POST data
+
+To create an item, you need to provide a caption & description in the post data. You
+will also need to provide the PK of the associated list with the parameter name `list`.  
+
 ### Hello World
 
 URL: `/hello-world`  
@@ -40,7 +105,7 @@ DATA:
 * Optional token header to make an authenticated request.
 
 RESPONSE:  
-* Plain text, `Hello world` if you are anonymous (no token / un recognised) 
+* `Hello world` if you are anonymous (no token / un recognised)
 * `Hello <username>` if you have the token (the tests fail for this... unverified).
 
 #### References
@@ -71,7 +136,7 @@ Status	| Resource	| Ref     | As a  | I want to         | So I can
 ------- | ---------	| ------- | ----- | ----------------- | ---------------------------------
 ASN		| Lee		| CS104   | User  | search for a list | find the list I want
 OPN		| 			| CS110   | User  | select the list I would like to vote on | vote on things I care about
-WRK		| Jacob		| CS101   | User  | create a list     | add items to vote
+CMP		| Jacob		| CS101   | User  | create a list     | add items to vote
 
 ### Iteration 3
 Done?	| Resource	| Ref     | As a  | I want to         | So I can
