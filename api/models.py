@@ -12,7 +12,7 @@ class List(models.Model):
 
 
 class Item(models.Model):
-    list = models.ForeignKey(List)
+    list = models.ForeignKey(List, related_name='items')
     caption = models.CharField(max_length=25)
     image = models.ImageField(null=True)
     description = models.CharField(max_length=140)

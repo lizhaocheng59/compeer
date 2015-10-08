@@ -15,15 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+
 from api import urls as api_urls
 from compeer.settings import DEBUG
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 ] + api_urls.urlPatterns
 
 if DEBUG:
-	from rest_framework.response import Response
+    from rest_framework.response import Response
 
     def say_hello(request):
         username = 'world'
