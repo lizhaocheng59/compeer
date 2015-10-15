@@ -14,3 +14,4 @@ urlPatterns = [
     url(r'^auth/register', views.register_user, name='register'),
     url(r'^', include(router.urls))
 ]
+
